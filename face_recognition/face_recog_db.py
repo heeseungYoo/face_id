@@ -150,7 +150,7 @@ if __name__ == '__main__':
     print(face_recog.known_face_names)
     #webcam_id = WebCam()
     classroom = 'N1_112'
-    lecture = {'CS496':['2020:01:08:15:00:00', '2020:01:09:15:00:00'], 'CS122':['2020:01:07:00:00:00', '2020:01:08:00:00:00'], 'CS201':['2020:01:07:15:00:00', '2020:01:09:15:00:00']}
+    lecture = {'CS496':['2020:01:01:15:00:00','2020:01:06:15:00:00','2020:01:08:15:00:00', '2020:01:13:15:00:00','2020:01:15:15:00:00', '2020:01:20:15:00:00', '2020:01:22:15:00:00','2020:01:27:15:00:00','2020:01:29:15:00:00']}
     values = list(lecture.values())
 
     for i in range(len(values)):
@@ -207,37 +207,42 @@ if __name__ == '__main__':
                     difference = (value[i]-time).total_seconds() / 60
                     print(difference)
                     if (difference >= 110.0):
+                        day = value[i].strftime('%m/%d')
                         val = value[i].strftime('%H:%M')
                         print(val)
                         col.update(
-                        {"$and":[{'student_id': get}, {'lecture_end_time' : val}, {'classroom':classroom}]}, 
+                        {"$and":[{'student_id': get}, {'lecture_end_time' : val}, {'classroom':classroom}, {'day': day}]}, 
                         {"$set": {'atd_check': ''}}
                         )
                     elif (difference >= 80.0 and difference < 110.0):
+                        day = value[i].strftime('%m/%d')
                         val = value[i].strftime('%H:%M')
                         print(val)
                         col.update(
-                        {"$and":[{'student_id': get}, {'lecture_end_time' : val}, {'classroom':classroom}, {'atd_check':''}]}, 
+                        {"$and":[{'student_id': get}, {'lecture_end_time' : val}, {'classroom':classroom}, {'atd_check':''}, {'day': day}]}, 
                         {"$set": {'atd_check': 'Y'}}
                         )
                     elif (difference > 60.0 and difference < 80.0):
+                        day = value[i].strftime('%m/%d')
                         val = value[i].strftime('%H:%M')
                         print(val)
                         col.update(
-                        {"$and":[{'student_id': get}, {'lecture_end_time' : val}, {'classroom':classroom}, {'atd_check':''}]}, 
+                        {"$and":[{'student_id': get}, {'lecture_end_time' : val}, {'classroom':classroom}, {'atd_check':''}, {'day': day}]}, 
                         {"$set": {'atd_check': 'L'}}
                         )
                     elif (difference >= 0 and difference <= 60.0):
+                        day = value[i].strftime('%m/%d')
                         val = value[i].strftime('%H:%M')
                         print(val)
                         col.update(
-                        {"$and":[{'student_id': get}, {'lecture_end_time' : val}, {'classroom':classroom}, {'atd_check':''}]}, 
+                        {"$and":[{'student_id': get}, {'lecture_end_time' : val}, {'classroom':classroom}, {'day': day}]}, 
                         {"$set": {'atd_check': 'N'}}
                         )
                     elif (difference < 0):
+                        day = value[i].strftime('%m/%d')
                         val = value[i].strftime('%H:%M')
                         col.update(
-                        {"$and":[{'student_id': get}, {'lecture_end_time' : val}, {'classroom':classroom}, {'atd_check':''}]}, 
+                        {"$and":[{'student_id': get}, {'lecture_end_time' : val}, {'classroom':classroom}, {'atd_check':''}, {'day': day}]}, 
                         {"$set": {'atd_check': 'N'}}
                         )
                         continue   
